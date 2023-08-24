@@ -16,6 +16,8 @@ public class Purchase {
     private Long userId;
     @Column(name = "program_id",nullable = false)
     private Long programId;
+    @Column(name = "price",nullable = false)
+    private Double price;
     @Column(name = "create_time",nullable = false)
     private LocalDateTime createTime;
 }

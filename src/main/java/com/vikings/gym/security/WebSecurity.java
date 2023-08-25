@@ -1,18 +1,16 @@
 package com.vikings.gym.security;
 
+import com.vikings.gym.model.Role;
 import com.vikings.gym.security.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,10 +22,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 public class WebSecurity {
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-//    private RsakeysConfig rsakeysConfig;
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private CustomUserDetailsService customUserDetailsService;
+////    private RsakeysConfig rsakeysConfig;
+    @Value("${authentication.internal-api-key}")
+    private String internalApiKey;
 
 //    public WebSecurity(RsakeysConfig rsakeysConfig, PasswordEncoder passwordEncoder) {
 //        this.rsakeysConfig = rsakeysConfig;
@@ -47,11 +46,19 @@ public class WebSecurity {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/authentication/**").permitAll()
+                        .requestMatchers("/api/program").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/program").permitAll()
+                        .requestMatchers("/api/program").hasRole(Role.ADMIN.name())
+                        .requestMatchers("/api/internal/**").permitAll()
                         .anyRequest().authenticated());
 
                 //jwt filter
                 http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
                 return http.build();
+    }
+    @Bean
+    public InternalApiAuthenticationFilter internalApiAuthenticationFilter(){
+        return new InternalApiAuthenticationFilter(internalApiKey);
     }
 //    @Bean
 //    public WebSecurityCustomizer webSecurityCustomizer(){}

@@ -26,10 +26,12 @@ public class JwtProvider implements IJwtProvider
     @Value("${app.jwt.expiration-in-ms}")
     private Long JWT_EXPIRATION_IN_MS;
     @Override
-    public String generateToken(UserPrincipal auth){
+    public String generateToken(UserPrincipal auth)
+    {
         String authorities =auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining());
+                .collect(Collectors.joining(","));
+
         return Jwts.builder()
                 .setSubject(auth.getUsername())
                 .claim("roles",authorities)
@@ -84,12 +86,15 @@ public class JwtProvider implements IJwtProvider
 
     }
 
-    private Claims extractClaims(HttpServletRequest request){
-        String token= SecurityUtils.extractAuthTokenFromRequest(request);
+    private Claims extractClaims(HttpServletRequest request)
+    {
+        String token = SecurityUtils.extractAuthTokenFromRequest(request);
 
-        if(token==null){
+        if (token == null)
+        {
             return null;
         }
+
         return Jwts.parser()
                 .setSigningKey(JWT_SECRET)
                 .parseClaimsJws(token)

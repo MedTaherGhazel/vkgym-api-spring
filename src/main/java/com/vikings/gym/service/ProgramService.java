@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProgramService implements IProgramService{
@@ -24,7 +25,12 @@ public class ProgramService implements IProgramService{
         programRepository.deleteById(id);
     }
     @Override
-    public List<Program> FindAllPrograms(){
+    public List<Program> findAllPrograms(){
         return programRepository.findAll();
+    }
+
+    @Override
+    public Optional<Program> findById(Long id) {
+        return this.programRepository.findById(id);
     }
 }

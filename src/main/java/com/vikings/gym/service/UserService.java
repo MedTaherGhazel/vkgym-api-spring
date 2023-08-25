@@ -33,12 +33,12 @@ public class UserService implements IUserService {
     }
     @Override
     @Transactional
-    public void MakeCoach(String username){
+    public void makeCoach(String username){
         userRepository.updateUserRole(username, Role.COACH);
     }
     @Override
     @Transactional
-    public void MakeAdmin(String username){
+    public void makeAdmin(String username){
         userRepository.updateUserRole(username, Role.ADMIN);
     }
 }

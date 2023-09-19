@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,20 +18,12 @@ public class Day implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "day",nullable = false)
-    private Integer day;
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "day_exercise",
-            joinColumns = @JoinColumn(name = "day_id"),
-            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
-    private List<Exercise> exercises = new ArrayList<>();
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "program_day",
-            joinColumns = @JoinColumn(name = "day_id"),
-            inverseJoinColumns = @JoinColumn(name = "program_id"))
-    private List<Program> programs = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "name",nullable = false)
+    private DayOfWeek day;
+    @Column(name = "is_rest",nullable = false)
+    private boolean restDay;
+    @Column(name = "week_id",nullable = false)
+    private String weekId;
 
 }

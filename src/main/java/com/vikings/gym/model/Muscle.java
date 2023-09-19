@@ -1,23 +1,29 @@
 package com.vikings.gym.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public enum Muscle {
+    CHEST,
+    SHOULDERS,
+    BACK,
+    BICEPS,
+    TRICEPS,
+    FOREARMS,
+    ABS,
+    LEGS,
+    GLUTES,
+    CALVES,
+    TRAPEZIUS,
+    LATTISSIMUS_DORSI,
+    RHOMBOIDS,
+    PECTORALIS_MAJOR,
+    DELTOIDS,
+    TRICEPS_BRACHII,
+    BICEPS_BRACHII,
+    BRACHIALIS,
+    BRACHIORADIALIS,
+    FOREARM,
+    HIP,
+    QUADRICEPS_FEMORIS,
+    HAMSTRINGS,
+    FOOT;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Set;
-
-@Entity
-@Data
-public class Muscle implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "name",nullable = false)
-    private String name;     
-    @Column(name = "description",nullable = false)
-    private String description;
 }
